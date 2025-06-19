@@ -4,6 +4,7 @@ import dj_database_url
 import graphene_file_upload.scalars
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 SECRET_KEY = os.environ.get('SECRET_KEY', 'replace-this-for-production')
 DEBUG = True
 ALLOWED_HOSTS = ['*']
@@ -20,7 +21,7 @@ INSTALLED_APPS = [
 
     # GraphQL + file upload
     'graphene_django',
-    'graphql_jwt.refresh_token',       # si usas refresh tokens
+    'graphql_jwt.refresh_token',
     'graphene_file_upload.django',
 
     # Tu app
@@ -60,35 +61,16 @@ WSGI_APPLICATION = 'gameforum_api.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-       # default='postgresql://postgres:123456@localhost:5432/vg_forum',
-       default='postgres://avnadmin:AVNS_vHwXVeW9oxFLHOVYHWz@pg-22490183-estudiantes-8f4f.h.aivencloud.com:27787/seriesflix?sslmode=require',
+        default='postgres://avnadmin:AVNS_vHwXVeW9oxFLHOVYHWz@pg-22490183-estudiantes-8f4f.h.aivencloud.com:27787/seriesflix?sslmode=require',
         conn_max_age=600
     )
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'defaultdb',
-#         'USER': 'avnadmin',
-#         'PASSWORD': 'AVNS_vHwXVeW9oxFLHOVYHWz',
-#         'HOST': 'pg-22490183-estudiantes-8f4f.h.aivencloud.com',
-#         'PORT': '27787',
-#         'OPTIONS': {
-#             'sslmode': 'require'
-#         }
-#     }
-# }
-
-
-
-
-
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME':'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME':'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME':'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME':'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -96,18 +78,18 @@ TIME_ZONE     = 'UTC'
 USE_I18N      = True
 USE_TZ        = True
 
+# Static files (for deployment in Render)
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Media (para servir imágenes)
-MEDIA_URL  = '/media/'
+# Media files
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Graphene + file upload
+# GraphQL config
 GRAPHENE = {
     'SCHEMA': 'posts.schema.schema',
-    'MIDDLEWARE': [
-        'graphql_jwt.middleware.JSONWebTokenMiddleware',
-    ],
+    'MIDDLEWARE': ['graphql_jwt.middleware.JSONWebTokenMiddleware'],
     'SCALARS': {
         'Upload': graphene_file_upload.scalars.Upload,
     }
@@ -118,8 +100,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+# CORS
 CORS_ORIGIN_ALLOW_ALL = True
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
